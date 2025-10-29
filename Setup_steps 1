@@ -25,3 +25,28 @@ Set up a centralized log collection system that gathers Windows Event Logs and s
    sudo /opt/splunk/bin/splunk start
 3.Access Splunk Web at:
 👉 http://localhost:8000 (Default creds: admin / yourpassword)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
