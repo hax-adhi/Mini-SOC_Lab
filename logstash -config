@@ -1,0 +1,71 @@
+# ===================== Logstash Pipeline for Winlogbeat =====================
+
+input {
+  # Receive logs from Winlogbeat
+  beats {
+    port => 5044
+    ssl => false
+  }
+}
+
+filter {
+  # --- Tag incoming logs for clarity ---
+  mutate {
+    add_tag => ["winlogbeat", "windows_logs"]
+  }
+
+  # --- Example of filtering specific logs ---
+  if [log_name] == "Security" {
+    mutate { add_tag => ["security_event"] }
+  }
+
+  # --- Parse Windows Event ID (optional example) ---
+  if [event_id] {
+    mutate {
+      add_field => { "event_code" => "%{[event_id]}" }
+    }
+  }
+
+  # --- Format timestamp properly ---
+  date {
+    match => [ "time_created", "ISO8601" ]
+    target => "@timestamp"
+  }
+
+  # --- Clean up unnecessary fields (optional) ---
+  mutate {
+    remove_field => ["beat", "agent", "ecs", "host"]
+  }
+}
+
+output {
+  # ==================== Option 1: Send to Elasticsearch ====================
+  # Uncomment this section if you’re using ELK
+  # elasticsearch {
+  #   hosts => ["http://localhost:9200"]
+  #   index => "winlogbeat-%{+YYYY.MM.dd}"
+  # }
+
+  # ==================== Option 2: Send to Splunk ===========================
+  # --- Using TCP output to Splunk’s TCP input (port 9997 typical) ---
+  tcp {
+    host => "192.168.1.20"         # <-- Replace with your Splunk server IP
+    port => 9997                   # <-- Ensure Splunk TCP input is enabled
+    codec => json
+  }
+
+  # --- OR via HTTP Event Collector (HEC) ---
+  # http {
+  #   url => "https://192.168.1.20:8088/services/collector"
+  #   http_method => "post"
+  #   format => "json"
+  #   headers => ["Authorization", "Splunk <YOUR_HEC_TOKEN>"]
+  #   ssl_verification => false
+  # }
+
+  # ==================== Debug Output (for Testing) ==========================
+  # Uncomment during setup to see raw logs in console
+  # stdout {
+  #   codec => rubydebug
+  # }
+}
