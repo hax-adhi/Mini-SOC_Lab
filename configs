@@ -1,1 +1,64 @@
+# ======================== Winlogbeat Configuration ===========================
+
+# Winlogbeat inputs
+winlogbeat.event_logs:
+  - name: Application
+  - name: Security
+    ignore_older: 72h
+  - name: System
+  - name: Windows PowerShell
+    event_id: 400, 403, 600, 800
+  - name: Microsoft-Windows-Sysmon/Operational
+    ignore_older: 72h
+
+# ======================= Output to Logstash or Splunk ========================
+
+# ---- Option 1: Send to Logstash (most common SOC lab setup)
+output.logstash:
+  hosts: ["192.168.1.10:5044"]   # <--- Replace with your Splunk/Logstash VM IP
+
+# ---- Option 2: Directly to Elasticsearch (if used)
+#output.elasticsearch:
+#  hosts: ["http://localhost:9200"]
+#  username: "elastic"
+#  password: "changeme"
+
+# ====================== Optional Splunk HTTP Event Collector ==================
+# Uncomment below if sending directly to Splunk HEC endpoint instead of Logstash
+#output.http:
+#  hosts: ["https://splunk-server:8088"]
+#  ssl.verification_mode: none
+#  headers:
+#    Authorization: "Splunk <HEC_TOKEN>"
+
+# ========================== Logging Configuration ============================
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: C:\ProgramData\winlogbeat\Logs
+  name: winlogbeat
+  keepfiles: 7
+  permissions: 0644
+
+# =========================== Setup Dashboard ================================
+setup.kibana:
+  host: "localhost:5601"
+
+# ========================== Winlogbeat Modules ===============================
+# (Optional, if you have specific modules like sysmon)
+#winlogbeat.modules:
+#  - module: sysmon
+#    sysmon:
+#      enabled: true
+
+# ======================== General Beat Settings ==============================
+setup.template.settings:
+  index.number_of_shards: 1
+
+queue.mem:
+  events: 4096
+  flush.min_events: 512
+  flush.timeout: 5s
+
+
 
