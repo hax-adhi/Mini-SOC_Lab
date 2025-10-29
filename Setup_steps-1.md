@@ -89,7 +89,7 @@ sudo journalctl -u logstash
 C:\ProgramData\winlogbeat\logs\winlogbeat.log
 ✅ Confirm data visible in Splunk Search dashboard.
 
-5. Outcome
+## 5. Outcome
    
 Successfully configured a working log pipeline:
 
