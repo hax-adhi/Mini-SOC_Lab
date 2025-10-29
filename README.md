@@ -21,3 +21,25 @@ To design and deploy a centralized log collection system that aggregates Windows
 4. Verified log ingestion using Splunk Search:
    ```spl
    index=* host=windows*
+5.Created a dashboard showing logon activity, service changes, and system errors.
+
+## 📊 Results
+
+- Successfully ingested and visualized Windows Event Logs in Splunk.
+
+- Observed real-time logon events and system alerts.
+
+- Built a foundation for future correlation and alerting.
+
+## 🧠 Skills Demonstrated
+
+- SIEM configuration and administration (Splunk)
+
+- Log forwarding (Winlogbeat)
+
+- Data parsing (Logstash)
+
+- SPL (Search Processing Language) basics
+
+- Windows Event Log analysis
+
