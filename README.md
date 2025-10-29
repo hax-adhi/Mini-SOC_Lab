@@ -1,4 +1,4 @@
-# 🧠 SOC Project 1: Centralized Log Collection Using Splunk, Logstash, and Winlogbeat
+# 🧠 SOC Project : Centralized Log Collection Using Splunk, Logstash, and Winlogbeat
 
 ## 🎯 Objective
 To design and deploy a centralized log collection system that aggregates Windows event logs into Splunk for real-time visibility and security monitoring.
